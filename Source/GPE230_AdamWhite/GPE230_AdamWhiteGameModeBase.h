@@ -13,5 +13,4 @@ UCLASS()
 class GPE230_ADAMWHITE_API AGPE230_AdamWhiteGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
 };
