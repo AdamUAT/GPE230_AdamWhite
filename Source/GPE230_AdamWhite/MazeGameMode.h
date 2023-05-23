@@ -4,6 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "GameFramework/DefaultPawn.h"
+#include "MazeCharacter.h"
+
 #include "MazeGameMode.generated.h"
 
 /**
@@ -14,4 +17,10 @@ class GPE230_ADAMWHITE_API AMazeGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+public:
+	void InitGameState() override;
+
+private:
+	UPROPERTY(EditAnywhere, NoClear)
+	TSubclassOf<AMazeCharacter> DefaultPlayerCharacter = AMazeCharacter::StaticClass();
 };

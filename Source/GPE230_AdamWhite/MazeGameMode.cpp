@@ -3,3 +3,12 @@
 
 #include "MazeGameMode.h"
 
+void AMazeGameMode::InitGameState()
+{
+	Super::InitGameState();
+
+	if (DefaultPawnClass == ADefaultPawn::StaticClass())
+	{
+		DefaultPawnClass = DefaultPlayerCharacter;
+	}
+}
