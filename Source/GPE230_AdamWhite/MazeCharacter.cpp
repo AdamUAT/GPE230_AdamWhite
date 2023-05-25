@@ -32,3 +32,18 @@ void AMazeCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 }
 
+void AMazeCharacter::MoveFB(float value)
+{
+	AddMovementInput(GetActorForwardVector(), value * moveSpeed);
+}
+
+void AMazeCharacter::MoveLR(float value)
+{
+	AddMovementInput(-GetActorRightVector(), value * moveSpeed);
+}
+
+void AMazeCharacter::Rotate(float value)
+{
+	AddControllerYawInput(value * rotationSpeed);
+}
+
