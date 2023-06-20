@@ -23,7 +23,10 @@ protected:
 	float currentHealth;
 
 public:	
-	UFUNCTION()
-	virtual void TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser);
+	UFUNCTION(BlueprintCallable)
+	virtual void TakeDamage(float DamageAmount);
 	virtual void Die();
+	//Test function
+	UFUNCTION(BlueprintCallable)
+	float GetCurrentHealth();
 };
