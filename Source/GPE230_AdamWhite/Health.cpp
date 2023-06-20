@@ -22,7 +22,7 @@ void UHealth::BeginPlay()
 	currentHealth = maxHealth;
 }
 
-void UHealth::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+void UHealth::TakeDamage(float DamageAmount)
 {
 	if (DamageAmount > 0)
 	{
@@ -38,5 +38,10 @@ void UHealth::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 void UHealth::Die()
 {
 	//Do die stuff later.
+}
+
+float UHealth::GetCurrentHealth()
+{
+	return currentHealth;
 }
 
