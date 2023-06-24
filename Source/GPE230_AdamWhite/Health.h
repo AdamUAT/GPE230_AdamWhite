@@ -29,4 +29,9 @@ public:
 	//Test function
 	UFUNCTION(BlueprintCallable)
 	float GetCurrentHealth();
+private:
+	UPROPERTY(EditAnywhere)
+		UAnimSequence* _deathAnim;
+	UPROPERTY(EditAnywhere)
+		bool _isDead = false;
 };

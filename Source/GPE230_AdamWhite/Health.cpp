@@ -2,6 +2,7 @@
 
 
 #include "Health.h"
+#include "GameFramework/Character.h"
 
 // Sets default values for this component's properties
 UHealth::UHealth()
@@ -24,12 +25,15 @@ void UHealth::BeginPlay()
 
 void UHealth::TakeDamage(float DamageAmount)
 {
-	if (DamageAmount > 0)
+	if (DamageAmount > 0 && !_isDead)
 	{
 		currentHealth -= DamageAmount;
 
+		UE_LOG(LogTemp, Log, TEXT("Player took %f damage. %f health remaining."), DamageAmount, currentHealth);
+
 		if (currentHealth <= 0)
 		{
+			currentHealth = 0;
 			Die();
 		}
 	}
@@ -37,7 +41,10 @@ void UHealth::TakeDamage(float DamageAmount)
 
 void UHealth::Die()
 {
-	//Do die stuff later.
+	_isDead = true;
+
+	//Get the mesh from the character attached to this component and play the death animation on it.
+	Cast<ACharacter>(GetOwner())->GetMesh()->PlayAnimation(_deathAnim, false);
 }
 
 float UHealth::GetCurrentHealth()
