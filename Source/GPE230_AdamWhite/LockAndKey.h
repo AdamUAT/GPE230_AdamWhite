@@ -21,4 +21,7 @@ public:
 
 	UFUNCTION()
 		void OpenTheDoor();
+private:
+	UPROPERTY(EditAnywhere)
+		TArray<AActor*> doorsToUnlock;
 };
