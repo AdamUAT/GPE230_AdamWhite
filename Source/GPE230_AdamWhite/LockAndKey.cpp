@@ -20,4 +20,8 @@ void ALockAndKey::CheckActorType(class AActor* OverlappedActor, AActor* OtherAct
 void ALockAndKey::OpenTheDoor()
 {
 	this->Destroy();
+	for (int i = 0; i < doorsToUnlock.Num(); i++)
+	{
+		doorsToUnlock[i]->Destroy();
+	}
 }
