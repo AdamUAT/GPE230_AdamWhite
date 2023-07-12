@@ -47,6 +47,7 @@ void UHealth::Die()
 	Cast<ACharacter>(GetOwner())->GetMesh()->PlayAnimation(_deathAnim, false);
 }
 
+//ToDo: Delete this
 float UHealth::GetCurrentHealth()
 {
 	return currentHealth;
