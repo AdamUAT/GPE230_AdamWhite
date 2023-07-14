@@ -45,4 +45,8 @@ private:
 	void MoveLR(float value);
 	void Rotate(float value);
 	void Stun();
+
+public:
+	UFUNCTION(BlueprintCallable)
+		void SpeedBoost(float amount);
 };

@@ -104,3 +104,8 @@ void AMazeCharacter::Stun()
 		}
 	}
 }
+
+void AMazeCharacter::SpeedBoost(float amount)
+{
+	moveSpeed += moveSpeed * amount;
+}
