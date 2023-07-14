@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "NiagaraComponent.h"
 #include "MazeCharacter.generated.h"
 
 UCLASS()
@@ -31,10 +32,21 @@ private:
 		float moveSpeed;
 	UPROPERTY(EditAnywhere)
 		float rotationSpeed;
+	UPROPERTY(EditAnywhere)
+		float stunCooldownDelay;
+	float currentStunCooldown;
+	UPROPERTY(EditAnywhere)
+		UNiagaraSystem* StunEffect;
+	UPROPERTY(EditAnywhere)
+		float StunRadius;
 
 private:
 	void MoveFB(float value);
 	void MoveLR(float value);
 	void Rotate(float value);
+	void Stun();
 
+public:
+	UFUNCTION(BlueprintCallable)
+		void SpeedBoost(float amount);
 };

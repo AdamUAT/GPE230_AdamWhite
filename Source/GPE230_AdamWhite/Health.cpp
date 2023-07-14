@@ -39,6 +39,22 @@ void UHealth::TakeDamage(float DamageAmount)
 	}
 }
 
+void UHealth::Heal(float healthAmount)
+{
+	if (healthAmount > 0 && !_isDead)
+	{
+		currentHealth += healthAmount;
+
+		if (currentHealth > maxHealth)
+		{
+			currentHealth = maxHealth;
+		}
+
+		UE_LOG(LogTemp, Log, TEXT("Player healed %f damage. %f health remaining."), healthAmount, currentHealth);
+
+	}
+}
+
 void UHealth::Die()
 {
 	_isDead = true;
@@ -47,6 +63,7 @@ void UHealth::Die()
 	Cast<ACharacter>(GetOwner())->GetMesh()->PlayAnimation(_deathAnim, false);
 }
 
+//ToDo: Delete this
 float UHealth::GetCurrentHealth()
 {
 	return currentHealth;

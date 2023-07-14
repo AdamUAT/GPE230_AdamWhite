@@ -2,6 +2,11 @@
 
 
 #include "MazeCharacter.h"
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "Stunnable.h"
+
 
 // Sets default values
 AMazeCharacter::AMazeCharacter()
@@ -16,6 +21,7 @@ void AMazeCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	currentStunCooldown = stunCooldownDelay;
 }
 
 // Called every frame
@@ -23,6 +29,11 @@ void AMazeCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	//Decrease the stun cooldown
+	if (currentStunCooldown > 0)
+	{
+		currentStunCooldown -= DeltaTime;
+	}
 }
 
 // Called to bind functionality to input
@@ -33,6 +44,7 @@ void AMazeCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis(TEXT("MoveFB"), this, &AMazeCharacter::MoveFB);
 	PlayerInputComponent->BindAxis(TEXT("MoveLR"), this, &AMazeCharacter::MoveLR);
 	PlayerInputComponent->BindAxis(TEXT("Rotate"), this, &AMazeCharacter::Rotate);
+	PlayerInputComponent->BindAction("Stun", IE_Pressed, this, &AMazeCharacter::Stun);
 }
 
 void AMazeCharacter::MoveFB(float value)
@@ -48,4 +60,52 @@ void AMazeCharacter::MoveLR(float value)
 void AMazeCharacter::Rotate(float value)
 {
 	AddControllerYawInput(value * rotationSpeed);
+}
+
+void AMazeCharacter::Stun()
+{
+	UE_LOG(LogTemp, Log, TEXT("Stun called"));
+
+	//Check if the player can stun
+	if (currentStunCooldown <= 0)
+	{
+		//Set the stun cooldown.
+		currentStunCooldown = stunCooldownDelay;
+
+		//Display visuals
+		UNiagaraComponent* NiagaraComp = UNiagaraFunctionLibrary::SpawnSystemAttached(StunEffect, GetDefaultAttachComponent(), NAME_None, FVector(0.f), FRotator(0.f), EAttachLocation::Type::KeepRelativeOffset, true);
+	
+		TArray<TEnumAsByte<EObjectTypeQuery>> objectTypes;
+		objectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
+		TArray<AActor*> outActors;
+		TArray<AActor*> actorsToIgnore;
+		//Ignore the player actor
+		actorsToIgnore.Add(GetOwner());
+		UClass* componentFilter = UStunnable::StaticClass();
+		bool hit = UKismetSystemLibrary::SphereOverlapActors(GetWorld(), this->GetActorLocation(), StunRadius, objectTypes, nullptr, actorsToIgnore, outActors);
+	
+		//Detect if at least one component was found.
+		if (hit)
+		{
+			//Loop through all the actors
+			for (int i = 0; i < outActors.Num(); i++)
+			{
+				//Get the Stunnable component. This only stuns actors with that component.
+				TArray<UStunnable*> stunComps;
+				outActors[i]->GetComponents(stunComps);
+
+				//Detect if there was a stunnable component
+				if (stunComps.Num() > 0)
+				{
+					//Call the function.
+					stunComps[0]->Stunned();
+				}
+			}
+		}
+	}
+}
+
+void AMazeCharacter::SpeedBoost(float amount)
+{
+	moveSpeed += moveSpeed * amount;
 }

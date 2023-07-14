@@ -25,6 +25,8 @@ protected:
 public:	
 	UFUNCTION(BlueprintCallable)
 	virtual void TakeDamage(float DamageAmount);
+	UFUNCTION(BlueprintCallable)
+	virtual void Heal(float healthAmount);
 	virtual void Die();
 	//Test function
 	UFUNCTION(BlueprintCallable)
