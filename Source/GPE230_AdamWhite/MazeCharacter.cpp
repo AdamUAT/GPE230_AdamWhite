@@ -36,17 +36,6 @@ void AMazeCharacter::Tick(float DeltaTime)
 	}
 }
 
-// Called to bind functionality to input
-void AMazeCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-	PlayerInputComponent->BindAxis(TEXT("MoveFB"), this, &AMazeCharacter::MoveFB);
-	PlayerInputComponent->BindAxis(TEXT("MoveLR"), this, &AMazeCharacter::MoveLR);
-	PlayerInputComponent->BindAxis(TEXT("Rotate"), this, &AMazeCharacter::Rotate);
-	PlayerInputComponent->BindAction("Stun", IE_Pressed, this, &AMazeCharacter::Stun);
-}
-
 void AMazeCharacter::MoveFB(float value)
 {
 	AddMovementInput(GetActorForwardVector(), value * moveSpeed);

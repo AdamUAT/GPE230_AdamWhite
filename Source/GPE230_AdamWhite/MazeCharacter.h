@@ -24,9 +24,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 private:
 	UPROPERTY(EditAnywhere)
 		float moveSpeed;
@@ -40,7 +37,7 @@ private:
 	UPROPERTY(EditAnywhere)
 		float StunRadius;
 
-private:
+public:
 	void MoveFB(float value);
 	void MoveLR(float value);
 	void Rotate(float value);

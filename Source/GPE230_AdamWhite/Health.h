@@ -28,12 +28,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual void Heal(float healthAmount);
 	virtual void Die();
-	//Test function
-	UFUNCTION(BlueprintCallable)
-	float GetCurrentHealth();
 private:
 	UPROPERTY(EditAnywhere)
 		UAnimSequence* _deathAnim;
-	UPROPERTY(EditAnywhere)
-		bool _isDead = false;
+	bool _isDead;
 };
