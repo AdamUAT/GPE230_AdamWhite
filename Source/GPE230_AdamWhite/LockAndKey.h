@@ -24,4 +24,6 @@ public:
 private:
 	UPROPERTY(EditAnywhere)
 		TArray<AActor*> doorsToUnlock;
+	UPROPERTY(EditAnywhere)
+		USoundWave* _doorSound;
 };

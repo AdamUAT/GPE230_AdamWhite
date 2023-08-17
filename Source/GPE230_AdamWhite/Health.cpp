@@ -69,11 +69,18 @@ void UHealth::Die()
 			if (AMazePlayerController* mazePlayerController = Cast<AMazePlayerController>(playerController))
 			{
 				mazePlayerController->isDead = true;
+				mazePlayerController->OpenGameOverScreen();
 			}
 		}
 	}
 
 	//Get the mesh from the character attached to this component and play the death animation on it.
 	Cast<ACharacter>(GetOwner())->GetMesh()->PlayAnimation(_deathAnim, false);
+}
+
+//Used so the HUD can display the healthbar
+float UHealth::GetHealth()
+{
+	return currentHealth;
 }
 

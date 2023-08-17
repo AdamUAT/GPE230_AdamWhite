@@ -2,6 +2,8 @@
 
 #include "MazeCharacter.h"
 #include "LockAndKey.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundWave.h"
 
 ALockAndKey::ALockAndKey()
 {
@@ -24,4 +26,7 @@ void ALockAndKey::OpenTheDoor()
 	{
 		doorsToUnlock[i]->Destroy();
 	}
+
+	//Play sound
+	UGameplayStatics::PlaySound2D(this, _doorSound);
 }

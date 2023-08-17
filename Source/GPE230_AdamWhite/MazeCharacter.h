@@ -36,13 +36,16 @@ private:
 		UNiagaraSystem* StunEffect;
 	UPROPERTY(EditAnywhere)
 		float StunRadius;
+	UPROPERTY(EditAnywhere)
+		USoundWave* _stunSound;
 
 public:
 	void MoveFB(float value);
 	void MoveLR(float value);
 	void Rotate(float value);
 	void Stun();
-
+	UFUNCTION(BlueprintCallable)
+		float GetStunPercentFull();
 public:
 	UFUNCTION(BlueprintCallable)
 		void SpeedBoost(float amount);

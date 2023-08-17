@@ -4,6 +4,8 @@
 #include "NPCEnemy.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Health.h"
+#include "Sound/SoundWave.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ANPCEnemy::ANPCEnemy()
@@ -65,6 +67,10 @@ void ANPCEnemy::DetectHit()
 
 					//Print debug text
 					UE_LOG(LogTemp, Log, TEXT("NPCEnemy actor \"%s\" hit other actor \"%s\", dealing %f damage."), *ownerName, *(HitResult.GetActor()->GetName()), _HitDamage);
+
+					//Play hit sound
+					//UGameplayStatics::PlaySoundAtLocation(GetWorld(), _punchSound, this->GetActorLocation(), this->GetActorRotation(), 1.f, 1.f, 0.f, _punchSoundAttenuation, nullptr, nullptr, nullptr);
+					UGameplayStatics::PlaySound2D(this, _punchSound);
 
 					canDamage = false;
 				}
