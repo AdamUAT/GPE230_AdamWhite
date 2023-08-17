@@ -24,9 +24,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 private:
 	UPROPERTY(EditAnywhere)
 		float moveSpeed;
@@ -39,13 +36,16 @@ private:
 		UNiagaraSystem* StunEffect;
 	UPROPERTY(EditAnywhere)
 		float StunRadius;
+	UPROPERTY(EditAnywhere)
+		USoundWave* _stunSound;
 
-private:
+public:
 	void MoveFB(float value);
 	void MoveLR(float value);
 	void Rotate(float value);
 	void Stun();
-
+	UFUNCTION(BlueprintCallable)
+		float GetStunPercentFull();
 public:
 	UFUNCTION(BlueprintCallable)
 		void SpeedBoost(float amount);

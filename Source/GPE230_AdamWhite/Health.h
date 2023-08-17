@@ -15,8 +15,8 @@ class GPE230_ADAMWHITE_API UHealth : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UHealth();
-	UPROPERTY(EditAnywhere)
-	float maxHealth;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		float maxHealth;
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -24,16 +24,14 @@ protected:
 
 public:	
 	UFUNCTION(BlueprintCallable)
-	virtual void TakeDamage(float DamageAmount);
+		virtual void TakeDamage(float DamageAmount);
 	UFUNCTION(BlueprintCallable)
-	virtual void Heal(float healthAmount);
+		virtual void Heal(float healthAmount);
 	virtual void Die();
-	//Test function
 	UFUNCTION(BlueprintCallable)
-	float GetCurrentHealth();
+		float GetHealth();
 private:
 	UPROPERTY(EditAnywhere)
 		UAnimSequence* _deathAnim;
-	UPROPERTY(EditAnywhere)
-		bool _isDead = false;
+	bool _isDead;
 };

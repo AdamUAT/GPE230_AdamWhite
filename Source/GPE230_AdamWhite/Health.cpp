@@ -3,6 +3,7 @@
 
 #include "Health.h"
 #include "GameFramework/Character.h"
+#include "MazePlayerController.h"
 
 // Sets default values for this component's properties
 UHealth::UHealth()
@@ -59,12 +60,26 @@ void UHealth::Die()
 {
 	_isDead = true;
 
+	if (ACharacter* componentOwner = Cast<ACharacter>(GetOwner()))
+	{
+		componentOwner->GetMesh()->PlayAnimation(_deathAnim, false);
+
+		if (APlayerController* playerController = Cast<APlayerController>(componentOwner->GetController()))
+		{
+			if (AMazePlayerController* mazePlayerController = Cast<AMazePlayerController>(playerController))
+			{
+				mazePlayerController->isDead = true;
+				mazePlayerController->OpenGameOverScreen();
+			}
+		}
+	}
+
 	//Get the mesh from the character attached to this component and play the death animation on it.
 	Cast<ACharacter>(GetOwner())->GetMesh()->PlayAnimation(_deathAnim, false);
 }
 
-//ToDo: Delete this
-float UHealth::GetCurrentHealth()
+//Used so the HUD can display the healthbar
+float UHealth::GetHealth()
 {
 	return currentHealth;
 }

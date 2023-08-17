@@ -6,6 +6,8 @@
 #include "NiagaraComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Stunnable.h"
+#include "Sound/SoundWave.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -36,17 +38,6 @@ void AMazeCharacter::Tick(float DeltaTime)
 	}
 }
 
-// Called to bind functionality to input
-void AMazeCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-	PlayerInputComponent->BindAxis(TEXT("MoveFB"), this, &AMazeCharacter::MoveFB);
-	PlayerInputComponent->BindAxis(TEXT("MoveLR"), this, &AMazeCharacter::MoveLR);
-	PlayerInputComponent->BindAxis(TEXT("Rotate"), this, &AMazeCharacter::Rotate);
-	PlayerInputComponent->BindAction("Stun", IE_Pressed, this, &AMazeCharacter::Stun);
-}
-
 void AMazeCharacter::MoveFB(float value)
 {
 	AddMovementInput(GetActorForwardVector(), value * moveSpeed);
@@ -74,7 +65,10 @@ void AMazeCharacter::Stun()
 
 		//Display visuals
 		UNiagaraComponent* NiagaraComp = UNiagaraFunctionLibrary::SpawnSystemAttached(StunEffect, GetDefaultAttachComponent(), NAME_None, FVector(0.f), FRotator(0.f), EAttachLocation::Type::KeepRelativeOffset, true);
-	
+		
+		//Play sound
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), _stunSound, this->GetActorLocation());
+
 		TArray<TEnumAsByte<EObjectTypeQuery>> objectTypes;
 		objectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_Pawn));
 		TArray<AActor*> outActors;
@@ -103,6 +97,20 @@ void AMazeCharacter::Stun()
 			}
 		}
 	}
+}
+
+float AMazeCharacter::GetStunPercentFull()
+{
+	float temp = currentStunCooldown / stunCooldownDelay;
+
+	//Cap the values
+	if (temp < 0)
+		temp = 0;
+	else if (temp > 1)
+		temp = 1;
+
+	//Invert
+	return 1 - temp;
 }
 
 void AMazeCharacter::SpeedBoost(float amount)
