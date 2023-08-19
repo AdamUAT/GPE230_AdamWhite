@@ -8,7 +8,8 @@
 #include "Stunnable.h"
 #include "Sound/SoundWave.h"
 #include "Kismet/GameplayStatics.h"
-
+#include "Math/Rotator.h"
+#include "Engine/World.h"
 
 // Sets default values
 AMazeCharacter::AMazeCharacter()
@@ -24,6 +25,14 @@ void AMazeCharacter::BeginPlay()
 	Super::BeginPlay();
 	
 	currentStunCooldown = stunCooldownDelay;
+
+	TArray<USpringArmComponent*> CameraComps;
+	GetComponents<USpringArmComponent>(CameraComps);
+
+	if (CameraComps.Num() > 0)
+	{
+		_cameraReference = CameraComps[0];
+	}
 }
 
 // Called every frame
@@ -51,6 +60,21 @@ void AMazeCharacter::MoveLR(float value)
 void AMazeCharacter::Rotate(float value)
 {
 	AddControllerYawInput(value * rotationSpeed);
+
+	if (_cameraReference != nullptr)
+	{
+		FRotator rollRotation(0, 0, cameraRollSpeed * value * GetWorld()->GetDeltaSeconds());
+		_cameraReference->SetWorldRotation(_cameraReference->GetComponentRotation() + rollRotation);
+		if (_cameraReference->GetComponentRotation().Roll > maxCameraRoll)
+		{
+			_cameraReference->SetWorldRotation(FRotator(_cameraReference->GetComponentRotation().Pitch, _cameraReference->GetComponentRotation().Yaw, maxCameraRoll));
+		}
+		else if (_cameraReference->GetComponentRotation().Roll < minCameraRoll)
+		{
+			_cameraReference->SetWorldRotation(FRotator(_cameraReference->GetComponentRotation().Pitch, _cameraReference->GetComponentRotation().Yaw, minCameraRoll));
+		}
+		//_cameraReference->AddLocalRotation(FQuat::MakeFromEuler(FVector::UnitX()) * cameraRollSpeed * value * GetWorld()->GetDeltaSeconds());
+	}
 }
 
 void AMazeCharacter::Stun()

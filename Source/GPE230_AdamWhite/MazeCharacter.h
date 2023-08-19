@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "NiagaraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "MazeCharacter.generated.h"
 
 UCLASS()
@@ -38,7 +39,13 @@ private:
 		float StunRadius;
 	UPROPERTY(EditAnywhere)
 		USoundWave* _stunSound;
-
+	USpringArmComponent* _cameraReference;
+	UPROPERTY(EditAnywhere)
+		float cameraRollSpeed;
+	UPROPERTY(EditAnywhere)
+		float minCameraRoll;
+	UPROPERTY(EditAnywhere)
+		float maxCameraRoll;
 public:
 	void MoveFB(float value);
 	void MoveLR(float value);
